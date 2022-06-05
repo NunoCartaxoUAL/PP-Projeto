@@ -1,5 +1,6 @@
 package view;
 import controller.controller;
+import model.Bus;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,9 +17,14 @@ public class CLI {
             String[] commands = input.split(" ");
             switch(commands[0]) {
                 case "Bus":
-                    String id = commands[1];
-                    Integer speed = Integer.parseInt(commands[2]);
-                    BusManager.runBus(id,speed);
+                    String type = commands[1];
+                    BusManager.addBus(type);
+                    break;
+                case "Print":
+                    System.out.println(BusManager.toString());
+                    break;
+                case "Run":
+                    BusManager.runBusses();
                 default:
                     break;
             }

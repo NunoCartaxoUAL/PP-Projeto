@@ -1,2 +1,3 @@
-Bus 1 2
-Bus 2 10
+Bus convencional
+Print
+Run
