@@ -18,13 +18,22 @@ public class CLI {
             switch(commands[0]) {
                 case "Bus":
                     String type = commands[1];
-                    BusManager.addBus(type);
+                    String start = commands[2];
+                    BusManager.addBus(type,start);
                     break;
                 case "Print":
                     System.out.println(BusManager.toString());
                     break;
                 case "Run":
                     BusManager.runBusses();
+                    break;
+                case "M":
+                    String id = commands[1];
+                    BusManager.maintenance(id);
+                    break;
+                case "Passenger":
+                    String ammount = commands[1];
+                    BusManager.addPassangers(ammount);
                 default:
                     break;
             }

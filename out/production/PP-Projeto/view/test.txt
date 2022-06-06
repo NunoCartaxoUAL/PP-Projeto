@@ -1,3 +1,8 @@
-Bus convencional
-Print
+Bus convencional Porto
+Bus longDrive Braga
+Bus expresso Cascais
+Bus miniBus Lisboa
+Passenger 200
 Run
+M 1
+Print

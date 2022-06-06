@@ -5,9 +5,14 @@ scale 600 width
 package models{
     class Bus{
         -Collection<Client> client
+        -String busID
         -Integer capacity
-        -Integer speed
+        -Double speed
         -String type
+        -Location location
+        -String "state"
+        -Collection<Integer> stops
+        -Double Distance
         -Status status
         +Integer getCapacity()
         +Integer getSpeed()
@@ -84,6 +89,8 @@ package controller {
         +Collection<Bus> getBus()
         +Collection<Location> getLocation()
         +Collection<AnomalyMaker> getAnomalyMaker()
+        +void addBus()
+        +void runBusses()
 
     }
 }
