@@ -2,7 +2,6 @@ package model;
 
 import java.util.*;
 
-
 public class Bus extends Thread{
     private List<Passanger> clients = new ArrayList<Passanger>();
     private String busID;
@@ -16,12 +15,11 @@ public class Bus extends Thread{
     //Private Status status;
     private double distance = 0;
 
-    public Bus(int capacity, double speed, String type, String busID,List<Integer> stops,Location location,String direction) {
+    public Bus(int capacity, double speed, String type, String busID,Location location,String direction) {
         this.capacity = capacity;
         this.speed = speed;
         this.type = type;
         this.busID = busID;
-        this.stops = stops;
         this.location = location;
         this.direction = direction;
 
@@ -43,6 +41,7 @@ public class Bus extends Thread{
     }
     void busStop(){
         System.out.println("bus:"+this.type+" busStop:"+location.getName());
+        //TODO load passangers
         if(direction=="normal"){
             if (location==location.getNextStop()){
                 direction="reversed";

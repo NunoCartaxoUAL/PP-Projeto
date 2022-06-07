@@ -11,7 +11,8 @@ public class CLI {
         File myObj = new File("view/test.txt");
         final Scanner sc = new Scanner(myObj);
         controller BusManager = new controller();
-        while (sc.hasNextLine()) {
+        Boolean stop=false;
+        while (sc.hasNextLine() && !stop) {
             System.out.print(">");
             var input =  sc.nextLine();
             String[] commands = input.split(" ");
@@ -32,8 +33,16 @@ public class CLI {
                     BusManager.maintenance(id);
                     break;
                 case "Passenger":
-                    String ammount = commands[1];
+                    Integer ammount = Integer.parseInt(commands[1]);
+                    /*
+                    if(BusManager.checkPassangerNum(ammount)){
+                        System.out.println("Numero de Passageiros invalidos, tem de ser superior a soma do maximo de todos os autocarros");
+                        stop=true;
+                    }else{
+                        BusManager.addPassangers(ammount);
+                    }*/
                     BusManager.addPassangers(ammount);
+                    break;
                 default:
                     break;
             }

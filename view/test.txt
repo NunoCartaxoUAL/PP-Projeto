@@ -1,8 +1,4 @@
 Bus convencional Porto
-Bus longDrive Braga
-Bus expresso Cascais
-Bus miniBus Lisboa
-Passenger 200
+Passenger 10
 Run
-M 1
 Print

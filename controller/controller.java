@@ -10,22 +10,11 @@ public class controller {
     private HashMap<String,Bus> Busses = new HashMap<String,Bus>();
     private HashMap<String,Location> Locations = new HashMap<String,Location>();
     private int idGenerator = 1;
-    private int ammount = 0;
+    private int passangerNum = 0;
+    private int minPassanger;
 
     public controller() {
-
-
-        Location Cascais = new Location("Cascais");
-        Location Lisboa = new Location("Lisboa");
-        Location Coimbra = new Location("Coimbra");
-        Location Porto = new Location("Porto");
-        Location Braga = new Location("Braga");
-        Locations.put("Cascais",Cascais);
-        Locations.put("Lisboa",Lisboa);
-        Locations.put("Coimbra",Coimbra);
-        Locations.put("Porto",Porto);
-        Locations.put("Braga",Braga);
-
+        addCities();
         List<Location> list = new ArrayList<Location>(Locations.values());
         for (int i = 0; i < list.size(); i++) {
             if(i>0 && i<list.size()-1){
@@ -38,39 +27,72 @@ public class controller {
 
         }
     }
+    public void addCities(){
+        Location Cascais = new Location("Cascais");
+        Location Lisboa = new Location("Lisboa");
+        Location Coimbra = new Location("Coimbra");
+        Location Porto = new Location("Porto");
+        Location Braga = new Location("Braga");
+        Locations.put("Cascais",Cascais);
+        Locations.put("Lisboa",Lisboa);
+        Locations.put("Coimbra",Coimbra);
+        Locations.put("Porto",Porto);
+        Locations.put("Braga",Braga);
+    }
 
-    public void addPassangers(String num) { //TODO add checks for number of passangers to be > than all bus capacity
-        ammount += Integer.parseInt(num);
+    public boolean checkPassangerNum(Integer num) {
+
+        return num<minPassanger;
+    }
+    public void addPassangers(Integer ammount) {
+        passangerNum += ammount;
         List<Location> destinations = new ArrayList<Location>(Locations.values());
-        for (int i = 0; i < ammount; i++) {
-            var stop = destinations.get(new Random().nextInt(destinations.size()-1)); //TODO THEY CAN BE THE SAME , SO A PASSANGER COULD SPAWN IN ITS DESTINATION AND I CANT BE BOTHERED TO DEAL WITH THAT RN
-            var passanger = new Passanger(String.valueOf(i),destinations.get(new Random().nextInt(destinations.size()-1)).getName());
-            stop.addPassenger(passanger);
+        for (int i = 0; i < passangerNum; i++) {
+            var start = destinations.get(new Random().nextInt(destinations.size()));
+            destinations.remove(start);
+            var destination = destinations.get(new Random().nextInt(destinations.size())).getName();
+            destinations.add(start);
+            var passanger = new Passanger(String.valueOf(i),destination);
+            start.addPassenger(passanger);
         }
     }
 
     public void addBus(String type,String Start) {
-        List<Integer> stops = Arrays.asList(0, 1, 2, 3, 4);
         Location start = Locations.get(Start);
         String Direction = Arrays.asList("normal","reversed").get(new Random().nextInt(1));
+        int speed;
+        int capacity=0;
+        String id;
         switch (type) {
             case "convencional":
-                this.Busses.put(String.valueOf(idGenerator),new Bus(51, 10, type, String.valueOf(idGenerator),stops,start,Direction));
+                id=String.valueOf(idGenerator);
+                capacity = 51;
+                speed = 10;
+                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
             case "miniBus":
-                this.Busses.put(String.valueOf(idGenerator),new Bus(24, 10, type, String.valueOf(idGenerator),stops,start,Direction));
+                id=String.valueOf(idGenerator);
+                capacity = 24;
+                speed = 10;
+                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
             case "longDrive":
-                this.Busses.put(String.valueOf(idGenerator),new Bus(59, 5, type, String.valueOf(idGenerator),stops,start,Direction));
+                id=String.valueOf(idGenerator);
+                capacity = 59;
+                speed = 5;
+                this.Busses.put(id,new Bus(capacity, 5, type, id,start,Direction));
                 break;
             case "expresso":
-                stops = Arrays.asList(1, 3, 4);
-                this.Busses.put(String.valueOf(idGenerator),new Bus(69, 10, type, String.valueOf(idGenerator),stops,start,Direction));
+                id=String.valueOf(idGenerator);
+                capacity = 69;
+                speed = 10;
+                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
 
             default:
                 break;
         }
+        minPassanger += capacity;
         idGenerator++;
     }
 
@@ -80,9 +102,6 @@ public class controller {
             String key = entry.getKey();
             Bus value = entry.getValue();
             value.start();
-
-            // do what you have to do here
-            // In your case, another loop.
         }
 
     }
@@ -108,9 +127,13 @@ public class controller {
     @Override
     public String toString() {
         return "controller{" +
-                "\nBusses=" + Busses +
-                ", \nLocations=" + Locations +
-                ", \nidGenerator=" + idGenerator +
+                "Busses=" + Busses +
+                ", Locations=" + Locations +
+                ", idGenerator=" + idGenerator +
+                ", passangerNum=" + passangerNum +
+                ", minPassanger=" + minPassanger +
                 '}';
     }
+
+
 }
