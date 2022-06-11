@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
+
     private String name;
     private Location nextStop;
+    private double nextDistance;
+    private double previousDistance;
     private Location previousStop;
-    private List<Passanger> passangers=new ArrayList<Passanger>();
+    private List<Passenger> passengers =new ArrayList<Passenger>();
 
-    public Location(String name) {
+    public Location(String name, double nextDistance, double previousDistance) {
         this.name = name;
-    }
-
-    public Location(String name, Location nextStop, Location previousStop) {
-        this.name = name;
-        this.nextStop = nextStop;
-        this.previousStop = previousStop;
+        this.nextDistance = nextDistance;
+        this.previousDistance = previousDistance;
     }
 
     public String getName() {
@@ -31,8 +30,16 @@ public class Location {
         return nextStop;
     }
 
-    public List<Passanger> getPassangers() {
-        return passangers;
+    public List<Passenger> getPassangers() {
+        return passengers;
+    }
+
+    public double getNextDistance() {
+        return nextDistance;
+    }
+
+    public double getPreviousDistance() {
+        return previousDistance;
     }
 
     public void setName(String name) {
@@ -43,28 +50,29 @@ public class Location {
         this.previousStop = previousStop;
     }
 
-    public void setPassangers(List<Passanger> passangers) {
-        this.passangers = passangers;
+    public void setPassangers(List<Passenger> passengers) {
+        this.passengers = passengers;
     }
 
     public void setNextStop(Location nextStop) {
         this.nextStop = nextStop;
     }
+
     public void setPreviousAndNextStop(Location previousStop, Location nextStop) {
         this.previousStop = previousStop;
         this.nextStop = nextStop;
     }
 
-    public void addPassenger(Passanger p){
-        this.passangers.add(p);
+    public void addPassenger(Passenger p){
+        this.passengers.add(p);
     }
     @Override
     public String toString() {
-        return "\nLocation{" +
+        return "Location{" +
                 "name='" + name + '\'' +
                 ", nextStop=" + nextStop.getName() +
                 ", previousStop=" + previousStop.getName() +
-                ", passangers=" + passangers +
-                '}';
+                ", passengers=" + passengers +
+                '}'+"\n";
     }
 }

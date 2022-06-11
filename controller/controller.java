@@ -2,37 +2,53 @@ package controller;
 
 import model.Bus;
 import model.Location;
-import model.Passanger;
+import model.Passenger;
 
 import java.util.*;
 
 public class controller {
     private HashMap<String,Bus> Busses = new HashMap<String,Bus>();
     private HashMap<String,Location> Locations = new HashMap<String,Location>();
+    private List<Passenger> passengers = new ArrayList<Passenger>();
     private int idGenerator = 1;
     private int passangerNum = 0;
     private int minPassanger;
 
+    public List<Passenger> getPassangers() {
+        return passengers;
+    }
+
     public controller() {
         addCities();
-        List<Location> list = new ArrayList<Location>(Locations.values());
-        for (int i = 0; i < list.size(); i++) {
-            if(i>0 && i<list.size()-1){
-                list.get(i).setPreviousAndNextStop(list.get(i-1),list.get(i+1));
-            }else if(i==list.size()-1){
-                list.get(i).setPreviousAndNextStop(list.get(i-1),list.get(i));
-            }else{
-                list.get(i).setPreviousAndNextStop(list.get(i),list.get(i+1));
-            }
 
-        }
+
+        Timer t1 = new Timer();
+        TimerTask checkIfFinished = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println(passengers);
+                if(checkFinished()){
+                    stopAllThreads();
+                    System.out.println("all passangers have reached their destination");
+                    System.out.println(this);
+                    this.cancel();
+                }
+            }
+        };
+        t1.scheduleAtFixedRate(checkIfFinished,0,2000);
+
     }
     public void addCities(){
-        Location Cascais = new Location("Cascais");
-        Location Lisboa = new Location("Lisboa");
-        Location Coimbra = new Location("Coimbra");
-        Location Porto = new Location("Porto");
-        Location Braga = new Location("Braga");
+        Location Cascais = new Location("Cascais",20,0);
+        Location Lisboa = new Location("Lisboa",25,20);
+        Location Coimbra = new Location("Coimbra",30,25);
+        Location Porto = new Location("Porto",35,30);
+        Location Braga = new Location("Braga",0,35);
+        Cascais.setPreviousAndNextStop(Cascais,Lisboa);
+        Lisboa.setPreviousAndNextStop(Cascais,Coimbra);
+        Coimbra.setPreviousAndNextStop(Lisboa,Porto);
+        Porto.setPreviousAndNextStop(Coimbra,Braga);
+        Braga.setPreviousAndNextStop(Porto,Braga);
         Locations.put("Cascais",Cascais);
         Locations.put("Lisboa",Lisboa);
         Locations.put("Coimbra",Coimbra);
@@ -52,9 +68,21 @@ public class controller {
             destinations.remove(start);
             var destination = destinations.get(new Random().nextInt(destinations.size())).getName();
             destinations.add(start);
-            var passanger = new Passanger(String.valueOf(i),destination);
+            var passanger = new Passenger(String.valueOf(i),destination);
             start.addPassenger(passanger);
+            passengers.add(passanger);
         }
+    }
+    public boolean checkFinished(){
+        var stop = true;
+
+        for (Passenger p :
+                passengers) {
+            if (p.getArrived()==false){
+                stop = false;
+            }
+        }
+        return stop;
     }
 
     public void addBus(String type,String Start) {
@@ -67,25 +95,25 @@ public class controller {
             case "convencional":
                 id=String.valueOf(idGenerator);
                 capacity = 51;
-                speed = 10;
+                speed = 80;
                 this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
             case "miniBus":
                 id=String.valueOf(idGenerator);
                 capacity = 24;
-                speed = 10;
+                speed = 80;
                 this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
             case "longDrive":
                 id=String.valueOf(idGenerator);
                 capacity = 59;
-                speed = 5;
-                this.Busses.put(id,new Bus(capacity, 5, type, id,start,Direction));
+                speed = 60;
+                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
             case "expresso":
                 id=String.valueOf(idGenerator);
                 capacity = 69;
-                speed = 10;
+                speed = 80;
                 this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
                 break;
 
@@ -106,34 +134,49 @@ public class controller {
 
     }
 
+    public void stopAllThreads() {
+        for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
+            Bus value = entry.getValue();
+            value.stop();
+            value.setRunning(false);
+        }
+    }
+
     public void maintenance(String id) {
         var bus =Busses.get(id);
-        bus.setState("maintenance");
-
+        //bus.setTask("maintenance");
+        bus.addTasks("maintenance");
         Timer t1 = new Timer();
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
                 synchronized (bus){
+                    //bus.setTask("driving");
+                    bus.addTasks("driving");
                     bus.notify();
-                    bus.setState("driving");
                 }
+                System.out.println("helooooo");
 
             }
         };
-        t1.schedule(tt,10000);
+        t1.schedule(tt,1000);
     }
 
     @Override
     public String toString() {
         return "controller{" +
                 "Busses=" + Busses +
-                ", Locations=" + Locations +
+                ", Locations="+"\n" + Locations +
                 ", idGenerator=" + idGenerator +
                 ", passangerNum=" + passangerNum +
                 ", minPassanger=" + minPassanger +
                 '}';
     }
-
-
 }
+
+//d-funcionario faz isto
+//b-funcionario
+//
+//
+//
+//

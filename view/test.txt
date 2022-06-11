@@ -1,4 +1,5 @@
 Bus convencional Porto
-Passenger 10
-Run
+M 1
+Passenger 2
 Print
+Run
