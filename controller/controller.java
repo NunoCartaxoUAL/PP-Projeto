@@ -13,6 +13,7 @@ public class controller {
     private int idGenerator = 1;
     private int passangerNum = 0;
     private int minPassanger;
+    private int randTimeMalfunction = 100;
 
     public List<Passenger> getPassangers() {
         return passengers;
@@ -20,22 +21,18 @@ public class controller {
 
     public controller() {
         addCities();
-
-
         Timer t1 = new Timer();
         TimerTask checkIfFinished = new TimerTask() {
             @Override
             public void run() {
-                System.out.println(passengers);
                 if(checkFinished()){
-                    stopAllThreads();
                     System.out.println("all passangers have reached their destination");
                     System.out.println(this);
-                    this.cancel();
+                    stopAllThreads();
                 }
             }
         };
-        t1.scheduleAtFixedRate(checkIfFinished,0,2000);
+        t1.scheduleAtFixedRate(checkIfFinished,500,1000);
 
     }
     public void addCities(){
@@ -124,7 +121,7 @@ public class controller {
         idGenerator++;
     }
 
-    public void runBusses() {
+    public void runBusses() throws InterruptedException {
 
         for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
             String key = entry.getKey();
@@ -137,9 +134,10 @@ public class controller {
     public void stopAllThreads() {
         for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
             Bus value = entry.getValue();
-            value.stop();
+            //value.stop();
             value.setRunning(false);
         }
+        System.exit(1);
     }
 
     public void maintenance(String id) {
@@ -152,10 +150,8 @@ public class controller {
             public void run() {
                 synchronized (bus){
                     //bus.setTask("driving");
-                    bus.addTasks("driving");
                     bus.notify();
                 }
-                System.out.println("helooooo");
 
             }
         };
@@ -171,6 +167,32 @@ public class controller {
                 ", passangerNum=" + passangerNum +
                 ", minPassanger=" + minPassanger +
                 '}';
+    }
+
+    public void malfuntion() {
+        Timer t1 = new Timer();
+
+        System.out.println("wafsaffsaasf");
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                // do something...
+                /*int randInt = new Random().nextInt(1,Busses.size())+1;
+                String randBusId = String.valueOf(randInt);
+                var affectedBus = Busses.get(randBusId);
+
+                System.out.println(randBusId);
+                System.out.println(randTimeMalfunction);
+                maintenance(randBusId);*/
+                System.out.println("period = " + randTimeMalfunction);
+                randTimeMalfunction = new Random().nextInt(50000,60000);
+                //randTimeMalfunction = 5000;   // change the period time
+                timer.cancel(); // cancel time
+                malfuntion();   // start the time again with a new period time
+                timer.purge();
+            }
+        }, randTimeMalfunction,1 );
+
     }
 }
 

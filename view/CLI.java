@@ -2,6 +2,8 @@ package view;
 import controller.controller;
 import model.Bus;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Time;
@@ -9,15 +11,27 @@ import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CLI {
+public class CLI{
 
     private controller BusManager = new controller();
 
-    public CLI() throws FileNotFoundException {
+    public CLI() throws FileNotFoundException, InterruptedException {
         Readfile();
+        malfunctionStart();
+        //Supervisor();
+
     }
 
-    public void Readfile() throws FileNotFoundException {
+    private void malfunctionStart() {
+        BusManager.malfuntion();
+    }
+
+    private void Supervisor() {
+        System.out.println("s");
+
+    }
+
+    public void Readfile() throws FileNotFoundException, InterruptedException {
         File myObj = new File("view/test.txt");
         final Scanner sc = new Scanner(myObj);
         Boolean stop=false;

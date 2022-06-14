@@ -33,26 +33,34 @@ public class Bus extends Thread{
         this.task = task;
     }*/
 
-    public void addTasks(String task) {
-        tasks.add(task);
-    }
+
 
     public void setRunning(boolean running) {
         this.running = running;
     }
 
+    public String getBusID() {
+        return busID;
+    }
+
+    public void addTasks(String task) {
+        tasks.add(task);
+    }
     void driving(){
+        nextStop();
         if(direction.matches("normal")){
-            distance = location.getNextDistance();
-        }else{
             distance = location.getPreviousDistance();
+
+        }else{
+            distance = location.getNextDistance();
         }
+
         for (int i = 1; i <=distance; i++) {
 
             var timePerKm = 1/speed;
             var milliseconds = timePerKm*60*60*1000/100; //TODO remove the /
             var percentage = (i/distance)*100;
-            //milliseconds = 10;
+            milliseconds = 10;
             System.out.println("the bus "+busID+"_"+type+" has done "+i+"km which is "+(int) percentage+"% of the way to "+location.getName());
             try {
                 this.sleep((long) milliseconds);
@@ -77,16 +85,18 @@ public class Bus extends Thread{
 
     }
     void loadPassangers(){
-        synchronized (passengers){
+        synchronized (location){
             var stopPassangers = location.getPassangers();
             var passagerSize = stopPassangers.size();
             if (stopPassangers.size()>0){
                 for (int i = 0; (i < passagerSize) && (passengers.size()<capacity); i++) {
                     Passenger passenger = stopPassangers.get(0);
+                    passenger.setOnBus(true);
                     stopPassangers.remove(0);
                     passengers.add(0, passenger);//synchronize
                 }
             }
+
         }
     }
     void nextStop(){
@@ -116,12 +126,11 @@ public class Bus extends Thread{
         }
     }
     void busStop(){
-        System.out.println(passengers + " " + busID + " " + type);
+
         unloadPassangers();
-        System.out.println(passengers + " " + busID + " " + type);
+
         loadPassangers();
-        System.out.println(passengers + " " + busID + " " + type);
-        nextStop();
+
     }
 
     private void maintenance() throws InterruptedException {
@@ -139,14 +148,14 @@ public class Bus extends Thread{
                     tasks.remove(0);
                     driving();
                     //task="busStop";
-                    tasks.add(0,"busStop");
+                    tasks.add("busStop");
                     break;
 
                 case "busStop":
                     tasks.remove(0);
                     busStop();
                     //task="driving";
-                    tasks.add(0,"driving");
+                    tasks.add("driving");
                     break;
 
                 case "maintenance":
@@ -156,6 +165,7 @@ public class Bus extends Thread{
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                     break;
                 case "terminate":
                     tasks.remove(0);

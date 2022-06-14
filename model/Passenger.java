@@ -27,6 +27,10 @@ public class Passenger {
         this.arrived = arrived;
     }
 
+    public void setOnBus(Boolean onBus) {
+        isOnBus = onBus;
+    }
+
     @Override
     public String toString() {
         return "Passenger{" +

@@ -1,5 +1,7 @@
 Bus convencional Porto
-M 1
-Passenger 2
-Print
+Bus convencional Porto
+Bus convencional Porto
+Bus convencional Porto
+Passenger 200
+// Print
 Run
