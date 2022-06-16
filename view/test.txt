@@ -1,7 +1,0 @@
-Bus convencional Porto
-Bus convencional Porto
-Bus convencional Porto
-Bus convencional Porto
-Passenger 200
-// Print
-Run

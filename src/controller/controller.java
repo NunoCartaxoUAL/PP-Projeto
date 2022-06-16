@@ -3,21 +3,17 @@ package controller;
 import model.Bus;
 import model.Location;
 import model.Passenger;
-
 import java.util.*;
 
 public class controller {
-    private HashMap<String,Bus> Busses = new HashMap<String,Bus>();
-    private HashMap<String,Location> Locations = new HashMap<String,Location>();
-    private List<Passenger> passengers = new ArrayList<Passenger>();
+
+    private HashMap<String,Bus> Busses = new HashMap<>();
+    private HashMap<String,Location> Locations = new HashMap<>();
+    private List<Passenger> passengers = new ArrayList<>();
     private int idGenerator = 1;
     private int passangerNum = 0;
     private int minPassanger;
     private int randTimeMalfunction = 100;
-
-    public List<Passenger> getPassangers() {
-        return passengers;
-    }
 
     public controller() {
         addCities();
@@ -33,8 +29,8 @@ public class controller {
             }
         };
         t1.scheduleAtFixedRate(checkIfFinished,500,1000);
-
     }
+
     public void addCities(){
         Location Cascais = new Location("Cascais",20,0);
         Location Lisboa = new Location("Lisboa",25,20);
@@ -51,15 +47,17 @@ public class controller {
         Locations.put("Coimbra",Coimbra);
         Locations.put("Porto",Porto);
         Locations.put("Braga",Braga);
+
+
     }
 
     public boolean checkPassangerNum(Integer num) {
-
         return num<minPassanger;
     }
+
     public void addPassangers(Integer ammount) {
         passangerNum += ammount;
-        List<Location> destinations = new ArrayList<Location>(Locations.values());
+        List<Location> destinations = new ArrayList<>(Locations.values());
         for (int i = 0; i < passangerNum; i++) {
             var start = destinations.get(new Random().nextInt(destinations.size()));
             destinations.remove(start);
@@ -70,12 +68,13 @@ public class controller {
             passengers.add(passanger);
         }
     }
+
     public boolean checkFinished(){
         var stop = true;
 
         for (Passenger p :
                 passengers) {
-            if (p.getArrived()==false){
+            if (!p.getArrived()){
                 stop = false;
             }
         }
@@ -84,47 +83,44 @@ public class controller {
 
     public void addBus(String type,String Start) {
         Location start = Locations.get(Start);
-        String Direction = Arrays.asList("normal","reversed").get(new Random().nextInt(1));
+        String Direction = Arrays.asList("north","south").get(new Random().nextInt(1));
         int speed;
         int capacity=0;
         String id;
         switch (type) {
-            case "convencional":
-                id=String.valueOf(idGenerator);
+            case "convencional" -> {
+                id = String.valueOf(idGenerator);
                 capacity = 51;
                 speed = 80;
-                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
-                break;
-            case "miniBus":
-                id=String.valueOf(idGenerator);
+                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+            }
+            case "miniBus" -> {
+                id = String.valueOf(idGenerator);
                 capacity = 24;
                 speed = 80;
-                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
-                break;
-            case "longDrive":
-                id=String.valueOf(idGenerator);
+                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+            }
+            case "longDrive" -> {
+                id = String.valueOf(idGenerator);
                 capacity = 59;
                 speed = 60;
-                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
-                break;
-            case "expresso":
-                id=String.valueOf(idGenerator);
+                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+            }
+            case "expresso" -> {
+                id = String.valueOf(idGenerator);
                 capacity = 69;
                 speed = 80;
-                this.Busses.put(id,new Bus(capacity, speed, type, id,start,Direction));
-                break;
-
-            default:
-                break;
+                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+            }
+            default -> {
+            }
         }
         minPassanger += capacity;
         idGenerator++;
     }
 
-    public void runBusses() throws InterruptedException {
-
+    public void runBusses() {
         for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
-            String key = entry.getKey();
             Bus value = entry.getValue();
             value.start();
         }
@@ -170,35 +166,33 @@ public class controller {
     }
 
     public void malfuntion() {
-        Timer t1 = new Timer();
-
-        System.out.println("wafsaffsaasf");
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 // do something...
-                /*int randInt = new Random().nextInt(1,Busses.size())+1;
+                int randInt = new Random().nextInt(Busses.size())+1;
                 String randBusId = String.valueOf(randInt);
                 var affectedBus = Busses.get(randBusId);
-
-                System.out.println(randBusId);
-                System.out.println(randTimeMalfunction);
-                maintenance(randBusId);*/
-                System.out.println("period = " + randTimeMalfunction);
-                randTimeMalfunction = new Random().nextInt(50000,60000);
-                //randTimeMalfunction = 5000;   // change the period time
-                timer.cancel(); // cancel time
-                malfuntion();   // start the time again with a new period time
-                timer.purge();
+                synchronized (affectedBus){
+                    try {
+                        maintenance(randBusId);
+                        affectedBus.suspend();
+                        Thread.sleep(2000);
+                        affectedBus.resume();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                nextMalfunction(timer);
             }
         }, randTimeMalfunction,1 );
-
+    }
+    public void nextMalfunction(Timer timer){
+        randTimeMalfunction = new Random().nextInt(2000,40000);
+        //randTimeMalfunction = 200;   // change the period time
+        timer.cancel(); // cancel time
+        malfuntion();   // start the time again with a new period time
+        timer.purge();
     }
 }
 
-//d-funcionario faz isto
-//b-funcionario
-//
-//
-//
-//

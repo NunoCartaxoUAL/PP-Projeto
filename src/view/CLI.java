@@ -1,15 +1,9 @@
 package view;
 import controller.controller;
-import model.Bus;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Time;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class CLI{
 
@@ -19,7 +13,7 @@ public class CLI{
         Readfile();
         malfunctionStart();
         //Supervisor();
-
+        //TODO PUT SRC FOLDER IN PROJECT
     }
 
     private void malfunctionStart() {
@@ -32,19 +26,21 @@ public class CLI{
     }
 
     public void Readfile() throws FileNotFoundException, InterruptedException {
-        File myObj = new File("view/test.txt");
+        File myObj = new File("src/view/test.txt");
         final Scanner sc = new Scanner(myObj);
         Boolean stop=false;
         while (sc.hasNextLine() && !stop) {
             System.out.print(">");
             var input =  sc.nextLine();
             String[] commands = input.split(" ");
-            switch(commands[0]) {
-                case "Bus":
+            switch (commands[0]) {
+                case "Bus" -> {
+                    //TODO expresso começar no sitio errado
                     //TODO turn off testing mode
                     String type = commands[1];
                     String start = commands[2];
-                    BusManager.addBus(type,start);
+                    BusManager.addBus(type, start);
+                }
                     /*if (!BusManager.busMaxReached()){
                         String type = commands[1];
                         String start = commands[2];
@@ -53,20 +49,15 @@ public class CLI{
                         System.out.println("Numero de Autocarros invalido numero de Autocarros que inseriu tem de ser entre de 4 a 10.");
                         stop=true;
                     }*/
-                    break;
-                case "Print":
-                    System.out.println(BusManager.toString());
-                    break;
-                case "Run":
-                    BusManager.runBusses();
-
-                    break;
-                case "M":
+                case "Print" -> System.out.println(BusManager.toString());
+                case "Run" -> BusManager.runBusses();
+                case "M" -> {
                     String id = commands[1];
                     BusManager.maintenance(id);
-                    break;
-                case "Passenger":
+                }
+                case "Passenger" -> {
                     //TODO turn off testing mode2
+                    //TODO nao por isto acima dos busses
                     Integer ammount = Integer.parseInt(commands[1]);
                     /*
                     if(BusManager.checkPassangerNum(ammount)){
@@ -76,9 +67,9 @@ public class CLI{
                         BusManager.addPassangers(ammount);
                     }*/
                     BusManager.addPassangers(ammount);
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
         }
         sc.close();
