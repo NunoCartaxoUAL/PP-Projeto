@@ -4,8 +4,6 @@ import controller.controller;
 import model.Bus;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +27,7 @@ public class GUI extends JFrame {
         this.heigth = this.getSize().height;
         var lyt = new SpringLayout();
         this.lyt = lyt;
-        this.setTitle("Conway's Game of Life");
+        this.setTitle("PP-Projeto");
 
         //basic setup of the 2 JPanels , main and game
         this.mainPanel = new JPanel();
