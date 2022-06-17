@@ -21,7 +21,6 @@ public class GUI extends JFrame {
 
     public GUI(controller busManager){
         this.busManager = busManager;
-        //basic setup of the JFrame
         this.setSize(740, 400);
         this.width =this.getSize().width;
         this.heigth = this.getSize().height;

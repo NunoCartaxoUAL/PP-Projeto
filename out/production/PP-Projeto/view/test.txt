@@ -9,6 +9,5 @@ Bus longDrive Porto
 Bus expresso Cascais
 Bus expresso Coimbra
 Passenger 200
-Print
 Run
 

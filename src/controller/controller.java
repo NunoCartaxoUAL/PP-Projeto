@@ -24,6 +24,8 @@ public class controller {
                 if(checkFinished()){
                     System.out.println("all passangers have reached their destination");
                     stopAllThreads();
+                    t1.cancel();
+                    t1.purge();
                 }
             }
         };
@@ -130,7 +132,7 @@ public class controller {
     public void stopAllThreads() {
         for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
             Bus value = entry.getValue();
-            //value.stop();
+            value.stop();
             value.setRunning(false);
         }
     }
@@ -162,8 +164,6 @@ public class controller {
                 int randInt = new Random().nextInt(Busses.size());
                 List<Bus> busList = new ArrayList<Bus>(Busses.values());
                 var affectedBus = busList.get(randInt);
-                System.out.println(affectedBus.getBusID());
-                System.out.println("T_______"+affectedBus);
                 synchronized (affectedBus){
                     try {
                         affectedBus.suspend();
