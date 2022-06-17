@@ -13,7 +13,7 @@ public class controller {
     private int idGenerator = 1;
     private int passangerNum = 0;
     private int minPassanger;
-    private int randTimeMalfunction = 100;
+    private int randTimeMalfunction = 10000;
 
     public controller() {
         addCities();
@@ -23,7 +23,6 @@ public class controller {
             public void run() {
                 if(checkFinished()){
                     System.out.println("all passangers have reached their destination");
-                    System.out.println(this);
                     stopAllThreads();
                 }
             }
@@ -49,6 +48,10 @@ public class controller {
         Locations.put("Braga",Braga);
 
 
+    }
+
+    public HashMap<String, Bus> getBusses() {
+        return Busses;
     }
 
     public boolean checkPassangerNum(Integer num) {
@@ -86,31 +89,28 @@ public class controller {
         String Direction = Arrays.asList("north","south").get(new Random().nextInt(1));
         int speed;
         int capacity=0;
-        String id;
+        String id = String.valueOf(idGenerator);
+        String key = id+"_"+type;
         switch (type) {
             case "convencional" -> {
-                id = String.valueOf(idGenerator);
                 capacity = 51;
                 speed = 80;
-                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+                this.Busses.put(key, new Bus(capacity, speed, type, id, start, Direction));
             }
             case "miniBus" -> {
-                id = String.valueOf(idGenerator);
                 capacity = 24;
                 speed = 80;
-                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+                this.Busses.put(key, new Bus(capacity, speed, type, id, start, Direction));
             }
             case "longDrive" -> {
-                id = String.valueOf(idGenerator);
                 capacity = 59;
                 speed = 60;
-                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+                this.Busses.put(key, new Bus(capacity, speed, type, id, start, Direction));
             }
             case "expresso" -> {
-                id = String.valueOf(idGenerator);
                 capacity = 69;
                 speed = 80;
-                this.Busses.put(id, new Bus(capacity, speed, type, id, start, Direction));
+                this.Busses.put(key, new Bus(capacity, speed, type, id, start, Direction));
             }
             default -> {
             }
@@ -133,25 +133,14 @@ public class controller {
             //value.stop();
             value.setRunning(false);
         }
-        System.exit(1);
     }
 
-    public void maintenance(String id) {
+    public void maintenance(String id,int time) throws InterruptedException {
         var bus =Busses.get(id);
         //bus.setTask("maintenance");
-        bus.addTasks("maintenance");
-        Timer t1 = new Timer();
-        TimerTask tt = new TimerTask() {
-            @Override
-            public void run() {
-                synchronized (bus){
-                    //bus.setTask("driving");
-                    bus.notify();
-                }
-
-            }
-        };
-        t1.schedule(tt,1000);
+        bus.suspend();
+        Thread.sleep(time*1000);
+        bus.resume();
     }
 
     @Override
@@ -165,34 +154,52 @@ public class controller {
                 '}';
     }
 
-    public void malfuntion() {
+    public void malfuntion() throws InterruptedException {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
                 // do something...
-                int randInt = new Random().nextInt(Busses.size())+1;
-                String randBusId = String.valueOf(randInt);
-                var affectedBus = Busses.get(randBusId);
+                int randInt = new Random().nextInt(Busses.size());
+                List<Bus> busList = new ArrayList<Bus>(Busses.values());
+                var affectedBus = busList.get(randInt);
+                System.out.println(affectedBus.getBusID());
+                System.out.println("T_______"+affectedBus);
                 synchronized (affectedBus){
                     try {
-                        maintenance(randBusId);
                         affectedBus.suspend();
-                        Thread.sleep(2000);
+                        Thread.sleep(8000);
                         affectedBus.resume();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
-                nextMalfunction(timer);
+                try {
+                    nextMalfunction(timer);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }, randTimeMalfunction,1 );
     }
-    public void nextMalfunction(Timer timer){
+    public void nextMalfunction(Timer timer) throws InterruptedException {
         randTimeMalfunction = new Random().nextInt(2000,40000);
         //randTimeMalfunction = 200;   // change the period time
         timer.cancel(); // cancel time
         malfuntion();   // start the time again with a new period time
         timer.purge();
+    }
+
+    public String getAllText() {
+        String text ="";
+        for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
+            Bus value = entry.getValue();
+            text += "["+value.getBusID()+
+                    "_"+ value.getType() +
+                    "] ("+value.getNumOfPassangers()+" Passengers)"+
+                    "--"+(int) value.getPercentageToDestination()+"%-->"+
+                    value.getLocation().getName()+"\n";
+        }
+        return text;
     }
 }
 

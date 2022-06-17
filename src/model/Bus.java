@@ -12,6 +12,7 @@ public class Bus extends Thread{
     private String direction;
     private List<String> tasks = new ArrayList<>();
     private boolean running = true;
+    private double percentageToDestination =0.0;
     private String status;
     private double distance = 0;
 
@@ -25,13 +26,21 @@ public class Bus extends Thread{
         this.tasks.add(0,"busStop");
 
     }
-    public void fds() throws InterruptedException {
-        this.wait();
-    }
     public void setRunning(boolean running) {
         this.running = running;
     }
 
+    public int getNumOfPassangers(){
+        return this.passengers.size();
+    }
+
+    public double getPercentageToDestination() {
+        return percentageToDestination;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
 
     public List<String> getTasks() {
         return tasks;
@@ -56,7 +65,8 @@ public class Bus extends Thread{
             var milliseconds = timePerKm*60*60*1000/100; //TODO remove the /
             var percentage = (i/distance)*100;
             //milliseconds = 10;
-            System.out.println("the bus "+busID+"_"+type+" has done "+i+"km which is "+(int) percentage+"% of the way to "+this.location.getName());
+            percentageToDestination = percentage;
+            //System.out.println("the bus "+busID+"_"+type+" has done "+i+"km which is "+(int) percentage+"% of the way to "+this.location.getName());
             try {
                 sleep((long) milliseconds);
             } catch (InterruptedException e) {
@@ -207,5 +217,13 @@ public class Bus extends Thread{
                 ", running=" + running +
                 ", distance=" + distance +
                 '}';
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getBusID() {
+        return busID;
     }
 }

@@ -12,17 +12,17 @@ public class CLI{
     public CLI() throws FileNotFoundException, InterruptedException {
         Readfile();
         malfunctionStart();
-        //Supervisor();
+        Supervisor();
         //TODO PUT SRC FOLDER IN PROJECT
     }
 
-    private void malfunctionStart() {
+    private void malfunctionStart() throws InterruptedException {
         BusManager.malfuntion();
     }
 
-    private void Supervisor() {
-        System.out.println("s");
-
+    private void Supervisor() throws InterruptedException {
+        Thread.sleep(100);
+        new GUI(BusManager);
     }
 
     public void Readfile() throws FileNotFoundException, InterruptedException {
@@ -51,10 +51,6 @@ public class CLI{
                     }*/
                 case "Print" -> System.out.println(BusManager.toString());
                 case "Run" -> BusManager.runBusses();
-                case "M" -> {
-                    String id = commands[1];
-                    BusManager.maintenance(id);
-                }
                 case "Passenger" -> {
                     //TODO turn off testing mode2
                     //TODO nao por isto acima dos busses

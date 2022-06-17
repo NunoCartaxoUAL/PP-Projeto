@@ -1,6 +1,14 @@
-Bus expresso Porto
-Passenger 2
-M 1
+Bus convencional Porto
+Bus convencional Lisboa
+Bus convencional Coimbra
+Bus miniBus Cascais
+Bus miniBus Lisboa
+Bus miniBus Braga
+Bus longDrive Lisboa
+Bus longDrive Porto
+Bus expresso Cascais
+Bus expresso Coimbra
+Passenger 200
 Print
 Run
 

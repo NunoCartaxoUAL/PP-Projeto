@@ -1,4 +1,5 @@
 import view.CLI;
+import view.GUI;
 
 import java.io.FileNotFoundException;
 
