@@ -23,7 +23,6 @@ public class CLI{
     }
 
     private void checkSimulationParameter() throws InterruptedException {
-        System.out.println(BusManager.busNumWithinLimits());
         if (!BusManager.busNumWithinLimits()) { //TODO change this to be 1 of every type and the output in the print
             System.out.println("Numero de Autocarros invalido. \n O numero de Autocarros que inseriu tem de ser entre de 4 a 10.");
         }else if (!BusManager.passangerNumWhitinLimits()){ //check is number of passangers > sum of all capacities of the busses

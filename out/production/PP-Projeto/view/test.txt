@@ -1,5 +1,6 @@
 Bus miniBus Porto
-Bus miniBus Porto
+Bus expresso Lisboa
+Bus convencional Braga
 Bus miniBus Cascais
 Bus miniBus Lisboa
 Passenger 1000

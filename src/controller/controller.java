@@ -112,7 +112,6 @@ public class controller {
     }
 
     public boolean busNumWithinLimits() {
-        System.out.println(Busses.size());
         return Busses.size()<=10 && Busses.size()>=4;
     }
 
