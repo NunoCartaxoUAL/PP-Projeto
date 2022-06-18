@@ -3,7 +3,6 @@ package model;
 public class Passenger {
     private String id;
     private String destination;
-    private Boolean isOnBus = false;
     private Boolean arrived = false;
 
     public Passenger(String id, String destination) {
@@ -15,10 +14,6 @@ public class Passenger {
         return arrived;
     }
 
-    public Boolean getOnBus() {
-        return isOnBus;
-    }
-
     public String getDestination() {
         return destination;
     }
@@ -27,17 +22,5 @@ public class Passenger {
         this.arrived = arrived;
     }
 
-    public void setOnBus(Boolean onBus) {
-        isOnBus = onBus;
-    }
 
-    @Override
-    public String toString() {
-        return "Passenger{" +
-                "id='" + id + '\'' +
-                ", destination='" + destination + '\'' +
-                ", isOnBus=" + isOnBus +
-                ", arrived=" + arrived +
-                '}';
-    }
 }

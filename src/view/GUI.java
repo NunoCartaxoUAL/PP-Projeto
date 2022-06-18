@@ -51,9 +51,9 @@ public class GUI extends JFrame {
         textPanel.setPreferredSize(new Dimension(this.width-200, this.heigth-100));
         gamePanel.add(textPanel);
         mainPanel.add(textPanel);
+        lyt.putConstraint(SpringLayout.NORTH,textPanel,10,SpringLayout.NORTH,mainPanel);
+        lyt.putConstraint(SpringLayout.WEST,textPanel,10,SpringLayout.WEST,mainPanel);
 
-        lyt.putConstraint(SpringLayout.NORTH,textPanel,0,SpringLayout.NORTH,gamePanel);
-        lyt.putConstraint(SpringLayout.WEST,textPanel,0,SpringLayout.WEST,gamePanel);
         //JLabel visor = new JLabel();
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -65,6 +65,7 @@ public class GUI extends JFrame {
         Timer t1 = new Timer(500,taskPerformer);
         t1.setRepeats(true);
         t1.start();
+
         //Various ActionListeners for the different buttons in game
         ActionListener maintenanceA = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -134,6 +135,25 @@ public class GUI extends JFrame {
         lyt.putConstraint(SpringLayout.NORTH,maintenance,0,SpringLayout.NORTH,RefillBus);
 
 
+        JLabel Author1 = new JLabel();
+        Author1.setText("Nuno Cartaxo  30007214");
+        Author1.setForeground(Color.white);
+        lyt.putConstraint(SpringLayout.WEST,Author1,10,SpringLayout.EAST,textPanel);
+        lyt.putConstraint(SpringLayout.NORTH,Author1,200,SpringLayout.NORTH,textPanel);
+        mainPanel.add(Author1);
+        JLabel Author2 = new JLabel();
+        Author2.setText("André Martins 30007252");
+        Author2.setForeground(Color.white);
+        lyt.putConstraint(SpringLayout.WEST,Author2,10,SpringLayout.EAST,textPanel);
+        lyt.putConstraint(SpringLayout.NORTH,Author2,15,SpringLayout.SOUTH,Author1);
+        mainPanel.add(Author2);
+        JLabel Author3 = new JLabel();
+        Author3.setText("André Santos  30007679");
+        Author3.setForeground(Color.white);
+        lyt.putConstraint(SpringLayout.WEST,Author3,10,SpringLayout.EAST,textPanel);
+        lyt.putConstraint(SpringLayout.NORTH,Author3,15,SpringLayout.SOUTH,Author2);
+        mainPanel.add(Author3);
+
 
 
         /*
@@ -143,8 +163,8 @@ public class GUI extends JFrame {
 
 
         this.bussesComboBox = addBussesComboBox();
-        lyt.putConstraint(SpringLayout.WEST,bussesComboBox,-2,SpringLayout.EAST,maintenance);
-        lyt.putConstraint(SpringLayout.NORTH,bussesComboBox,-100,SpringLayout.NORTH,maintenance);
+        lyt.putConstraint(SpringLayout.WEST,bussesComboBox,10,SpringLayout.EAST,textPanel);
+        lyt.putConstraint(SpringLayout.NORTH,bussesComboBox,0,SpringLayout.NORTH,textPanel);
 
         mainPanel.add(bussesComboBox);
         //gamePanel.add(visor);
@@ -180,7 +200,6 @@ public class GUI extends JFrame {
 
     private JComboBox<String> addBussesComboBox() {
         String[] optionsToChoose = new String[busManager.getBusses().size()];
-        Bus[] busses;
         int count = 0;
         for(Map.Entry<String, Bus> entry : busManager.getBusses().entrySet()) {
             Bus value = entry.getValue();

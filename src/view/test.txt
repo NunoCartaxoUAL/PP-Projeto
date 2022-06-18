@@ -1,13 +1,13 @@
 Bus convencional Porto
+Bus convencional Cascais
 Bus convencional Lisboa
-Bus convencional Coimbra
-Bus miniBus Cascais
-Bus miniBus Lisboa
-Bus miniBus Braga
-Bus longDrive Lisboa
-Bus longDrive Porto
-Bus expresso Cascais
-Bus expresso Coimbra
-Passenger 200
+Bus convencional Porto
+Bus convencional Porto
+Bus convencional Cascais
+Bus convencional Lisboa
+Bus convencional Porto
+Bus convencional Porto
+Bus convencional Cascais
+Passenger 2000
 Run
 

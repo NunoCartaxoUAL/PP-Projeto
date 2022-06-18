@@ -6,61 +6,45 @@ import java.util.List;
 public class Location {
 
     private String name;
-    private Location nextStop;
-    private double nextDistance;
-    private double previousDistance;
-    private Location previousStop;
+    private Location northStop;
+    private double northDistance;
+    private double southDistance;
+    private Location southStop;
     private List<Passenger> passengers =new ArrayList<Passenger>();
 
-    public Location(String name, double nextDistance, double previousDistance) {
+    public Location(String name, double northDistance, double southDistance) {
         this.name = name;
-        this.nextDistance = nextDistance;
-        this.previousDistance = previousDistance;
+        this.northDistance = northDistance;
+        this.southDistance = southDistance;
     }
 
     public String getName() {
         return name;
     }
 
-    public Location getPreviousStop() {
-        return previousStop;
+    public Location getSouthStop() {
+        return southStop;
     }
 
-    public Location getNextStop() {
-        return nextStop;
+    public Location getNorthStop() {
+        return northStop;
     }
 
     public List<Passenger> getPassangers() {
         return passengers;
     }
 
-    public double getNextDistance() {
-        return nextDistance;
+    public double getNorthDistance() {
+        return northDistance;
     }
 
-    public double getPreviousDistance() {
-        return previousDistance;
+    public double getSouthDistance() {
+        return southDistance;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPreviousStop(Location previousStop) {
-        this.previousStop = previousStop;
-    }
-
-    public void setPassangers(List<Passenger> passengers) {
-        this.passengers = passengers;
-    }
-
-    public void setNextStop(Location nextStop) {
-        this.nextStop = nextStop;
-    }
-
-    public void setPreviousAndNextStop(Location previousStop, Location nextStop) {
-        this.previousStop = previousStop;
-        this.nextStop = nextStop;
+    public void setSouthAndNorthStop(Location southStop, Location northStop) {
+        this.southStop = southStop;
+        this.northStop = northStop;
     }
 
     public void addPassenger(Passenger p){
@@ -70,8 +54,8 @@ public class Location {
     public String toString() {
         return "Location{" +
                 "name='" + name + '\'' +
-                ", nextStop=" + nextStop.getName() +
-                ", previousStop=" + previousStop.getName() +
+                ", northStop=" + northStop.getName() +
+                ", southStop=" + southStop.getName() +
                 ", passengers=" + passengers +
                 '}'+"\n";
     }

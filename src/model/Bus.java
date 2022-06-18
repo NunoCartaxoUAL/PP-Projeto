@@ -13,7 +13,7 @@ public class Bus extends Thread{
     private List<String> tasks = new ArrayList<>();
     private boolean running = true;
     private double percentageToDestination =0.0;
-    private String status;
+    private String status = "Normal";
     private double distance = 0;
 
     public Bus(int capacity, double speed, String type, String busID,Location location,String direction) {
@@ -26,8 +26,9 @@ public class Bus extends Thread{
         this.tasks.add(0,"busStop");
 
     }
-    public void setRunning(boolean running) {
-        this.running = running;
+
+    public String getDirection() {
+        return direction;
     }
 
     public int getNumOfPassangers(){
@@ -46,17 +47,29 @@ public class Bus extends Thread{
         return tasks;
     }
 
-    public void addTasks(String task) {
-        tasks.add(task);
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Location getPastLocation(){
+        return switch (this.direction) {
+            case "north" -> this.location.getSouthStop();
+            case "south" -> this.location.getNorthStop();
+            default -> null;
+        };
+
     }
 
     void driving(){
-        nextStop();
+        nextStop(); //Calculate the next stop
         if(this.direction.matches("north")){
-            distance = this.location.getPreviousDistance();
-
+            distance = this.location.getSouthDistance(); // get next stop north distance
         }else{
-            distance = this.location.getNextDistance();
+            distance = this.location.getNorthDistance();// get next stop south distance
         }
 
         for (int i = 1; i <=distance; i++) {
@@ -73,7 +86,6 @@ public class Bus extends Thread{
                 e.printStackTrace();
             }
         }
-
     }
     void unloadPassangers(){
         //TODO REMOVE THIS
@@ -82,21 +94,20 @@ public class Bus extends Thread{
                 var p= passengers.get(i);
                 if (p.getDestination().matches(this.location.getName())){
                     p.setArrived(true);
-                    passengers.remove(p);//synchronize
+                    passengers.remove(p);
                 }
             }
         }
     }
     void loadPassangers(){
-        synchronized (this.location){
+        synchronized (this.location){ // lock the variable location so that no bus can change it while this one is loading passengers
             var stopPassangers = this.location.getPassangers();
             var passagerSize = stopPassangers.size();
             if (stopPassangers.size()>0){
                 for (int i = 0; (i < passagerSize) && (passengers.size()<capacity); i++) {
-                    Passenger passenger = stopPassangers.get(0);
-                    passenger.setOnBus(true);
-                    stopPassangers.remove(0);
-                    passengers.add(0, passenger);//synchronize
+                    Passenger passenger = stopPassangers.get(0); // get first passenger in location list
+                    stopPassangers.remove(0);  // remove that passenger from the list
+                    passengers.add(0, passenger);// add the passenger to the bus passenger list
                 }
             }
         }
@@ -114,7 +125,6 @@ public class Bus extends Thread{
                     if (passenger.getDestination().matches("Cascais") ||passenger.getDestination().matches("Coimbra")){
                         skipPassanger++;
                     }else{
-                        passenger.setOnBus(true);
                         stopPassangers.remove(skipPassanger);
                         passengers.add(0, passenger);//synchronize
                     }
@@ -123,29 +133,21 @@ public class Bus extends Thread{
         }
     }
     void nextStop(){
-        switch (this.direction){
 
-            case "north":
-                if (this.location==this.location.getNextStop()){
-                    this.direction="south";
-                    this.location = this.location.getPreviousStop();
-                }else{
-                    this.location = this.location.getNextStop();
-                }
-                break;
-
-            case "south":
-                if (this.location==this.location.getPreviousStop()){
-                    this.direction="north";
-                    this.location = this.location.getNextStop();
-                }else{
-                    this.location = this.location.getPreviousStop();
-                }
-                break;
-
-            default:
-                break;
-
+        if ("north".equals(this.direction)) {
+            if (this.location == this.location.getNorthStop()) {
+                this.direction = "south";
+                this.location = this.location.getSouthStop();
+            } else {
+                this.location = this.location.getNorthStop();
+            }
+        } else if ("south".equals(this.direction)) {
+            if (this.location == this.location.getSouthStop()) {
+                this.direction = "north";
+                this.location = this.location.getNorthStop();
+            } else {
+                this.location = this.location.getSouthStop();
+            }
         }
     }
 
@@ -159,7 +161,7 @@ public class Bus extends Thread{
 
     }
 
-    private void maintenance() throws InterruptedException {
+    private void maintenance() throws InterruptedException { //TODO maybe remove
         synchronized (this){
             this.wait();
         }
@@ -168,9 +170,9 @@ public class Bus extends Thread{
     public void run() {
 
         while(running){
-            switch (tasks.get(0)) {//task
+            switch (tasks.get(0)) {//task buffer of tasks the bus should do
                 case "driving" -> {
-                    tasks.remove(0);
+                    tasks.remove(0); //remove the task that ws just used
                     driving();
                     if ((this.type.matches("expresso") && (this.location.getName().matches("Cascais") || this.location.getName().matches("Coimbra")))) {
                         tasks.add("driving");
@@ -179,44 +181,13 @@ public class Bus extends Thread{
                     }
                 }
                 case "busStop" -> {
-                    tasks.remove(0);
+                    tasks.remove(0);//remove the task that ws just used
                     busStop();
                     //task="driving";
                     tasks.add("driving");
                 }
-                case "maintenance" -> {
-                    tasks.remove(0);
-                    try {
-                        maintenance();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                case "terminate" -> {
-                    tasks.remove(0);
-                    running = false;
-                }
-                default -> {
-                }
             }
         }
-    }
-
-
-    @Override
-    public String toString() {
-        return "Bus{" +
-                "passengers=" + passengers +
-                ", busID='" + busID + '\'' +
-                ", capacity=" + capacity +
-                ", speed=" + speed +
-                ", type='" + type + '\'' +
-                ", location=" + location.getName() +
-                ", direction='" + direction + '\'' +
-                ", tasks=" + tasks +
-                ", running=" + running +
-                ", distance=" + distance +
-                '}';
     }
 
     public String getType() {

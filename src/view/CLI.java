@@ -7,30 +7,45 @@ import java.util.Scanner;
 
 public class CLI{
 
-    private controller BusManager = new controller();
+    private controller BusManager = new controller(); // create the controller/busManager
 
     public CLI() throws FileNotFoundException, InterruptedException {
-        Readfile();
+        readfile();
+        checkSimulationParameter(); // check if passengers > than the sum of the capacity of all busses
+                                    // and if busses number 4<=x<=10
         malfunctionStart();
-        Supervisor();
-        //TODO PUT SRC FOLDER IN PROJECT
+        supervisor();
     }
 
-    private void malfunctionStart() throws InterruptedException {
+    private void startSimulation() {
+        BusManager.runBusses();
+    }
+
+    private void checkSimulationParameter() {
+        System.out.println(BusManager.busNumWithinLimits());
+        if (!BusManager.busNumWithinLimits()) { //TODO change this to be 1 of every type and the output in the print
+            System.out.println("Numero de Autocarros invalido. \n O numero de Autocarros que inseriu tem de ser entre de 4 a 10.");
+        }else if (!BusManager.passangerNumWhitinLimits()){ //check is number of passangers > sum of all capacities of the busses
+            System.out.println("Numero de Passageiros invalido. \n O  numero de Passageiros tem the ser superior a soma das capacidades dos autocarros");
+        }else{
+            startSimulation();
+        }
+    }
+
+    private void malfunctionStart() {
         BusManager.malfuntion();
     }
 
-    private void Supervisor() throws InterruptedException {
-        Thread.sleep(100);
+    private void supervisor() throws InterruptedException {
+        Thread.sleep(10);
         new GUI(BusManager);
     }
 
-    public void Readfile() throws FileNotFoundException, InterruptedException {
+    public void readfile() throws FileNotFoundException {
         File myObj = new File("src/view/test.txt");
         final Scanner sc = new Scanner(myObj);
         Boolean stop=false;
         while (sc.hasNextLine() && !stop) {
-            System.out.print(">");
             var input =  sc.nextLine();
             String[] commands = input.split(" ");
             switch (commands[0]) {
@@ -41,27 +56,12 @@ public class CLI{
                     String start = commands[2];
                     BusManager.addBus(type, start);
                 }
-                    /*if (!BusManager.busMaxReached()){
-                        String type = commands[1];
-                        String start = commands[2];
-                        BusManager.addBus(type,start);
-                    }else{
-                        System.out.println("Numero de Autocarros invalido numero de Autocarros que inseriu tem de ser entre de 4 a 10.");
-                        stop=true;
-                    }*/
-                case "Print" -> System.out.println(BusManager.toString());
-                case "Run" -> BusManager.runBusses();
+                //TODO remove all prints/ to strings in classes
                 case "Passenger" -> {
                     //TODO turn off testing mode2
                     //TODO nao por isto acima dos busses
                     Integer ammount = Integer.parseInt(commands[1]);
-                    /*
-                    if(BusManager.checkPassangerNum(ammount)){
-                        System.out.println("Numero de Passageiros invalidos, tem de ser superior a soma do maximo de todos os autocarros");
-                        stop=true;
-                    }else{
-                        BusManager.addPassangers(ammount);
-                    }*/
+
                     BusManager.addPassangers(ammount);
                 }
                 default -> {
