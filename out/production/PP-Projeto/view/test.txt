@@ -1,13 +1,7 @@
-Bus convencional Porto
-Bus convencional Cascais
-Bus convencional Lisboa
-Bus convencional Porto
-Bus convencional Porto
-Bus convencional Cascais
-Bus convencional Lisboa
-Bus convencional Porto
-Bus convencional Porto
-Bus convencional Cascais
-Passenger 2000
+Bus miniBus Porto
+Bus miniBus Porto
+Bus miniBus Cascais
+Bus miniBus Lisboa
+Passenger 1000
 Run
 

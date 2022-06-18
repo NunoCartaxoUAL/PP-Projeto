@@ -49,6 +49,9 @@ public class GUI extends JFrame {
         int delay = 500; //milliseconds
         JTextPane textPanel = new JTextPane();
         textPanel.setPreferredSize(new Dimension(this.width-200, this.heigth-100));
+        textPanel.setBackground(Color.DARK_GRAY);
+        textPanel.setForeground(Color.white);
+        textPanel.setFont(new Font("Calibri",0, 15));
         gamePanel.add(textPanel);
         mainPanel.add(textPanel);
         lyt.putConstraint(SpringLayout.NORTH,textPanel,10,SpringLayout.NORTH,mainPanel);

@@ -100,6 +100,7 @@ public class Bus extends Thread{
         }
     }
     void loadPassangers(){
+
         synchronized (this.location){ // lock the variable location so that no bus can change it while this one is loading passengers
             var stopPassangers = this.location.getPassangers();
             var passagerSize = stopPassangers.size();
