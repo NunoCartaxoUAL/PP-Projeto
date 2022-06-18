@@ -1,75 +1,78 @@
 @startuml
 
+
 scale 600 width
 
 package models{
     class Bus{
-        -Collection<Client> client
+        -Collection<Passenger> passengers
         -String busID
         -Integer capacity
         -Double speed
         -String type
         -Location location
-        -String "state"
-        -Collection<Integer> stops
-        -Double Distance
+        -String direction
+        -Collection<String> tasks
+        -Boolean running
+        -Double percentageToDestination
         -Status status
-        +Integer getCapacity()
-        +Integer getSpeed()
+        -Double distance
+        +String getDirection()
+        +Integer getNumOfPassangers()
+        +Double getPercentageToDestination()
+        +Location getLocation()
+        +Collection<String> getTasks()
+        +Void setStatus()
+        +String getStatus()
+        +Location getPastLocation()
+        Void Driving()
+        Void unloadPassangers()
+        Void loadPassangers()
+        -Void loadPassangersExpresso()
+        Void nextStop()
+        Void busStop()
+        -Void maintenance()
+        +Void run
         +String getType()
-        +Collection<Client> getClient()
-        +Void addClients()
-        +Void removeClients()
-        +Status getStatus()
+        +String getBusID()
     }
 
-    class Client{
+    class Passenger{
+        -String id
         -String destination
-        -Boolean isOnBus
         -Boolean arrived
-        +String getDestination()
-        +Boolean getIsOnBus()
         +Boolean getArrived()
+        +String getDestination()
+        +Void setArrived()
+        +String getId()
     }
 
     class Location{
         -String name
-        -Location nextStop
-        -Location previousStop
-        -Collection<Client> client
+        -Location northStop
+        -Location southStop
+        -Double northDistance
+        -Double southDistance
+        -Collection<Passenger> passengers
         +String getName()
-        +Location getNext()
-        +Location getPrevious()
-        +Collection<Client> getClient()
+        +Location getNorthStop()
+        +Location getSouthStop()
+        +Double getNorthDistance
+        +Double getSouthDistance
+        +Collection<Passenger> getPassengers()
+        +Void setSouthAndNorthStop()
+        +Void addPassenger()
     }
 
-    class Supervisor{
-        -Integer id
-        +Integer getId()
-    }
 
-    class Status{
-        -String status
-        -Boolean stopped
-        +String getStatus()
-        +Boolean getStopped()
-    }
-
-    class AnomalyMaker{
-        -String types
-        +String getTypes()
-    }
-
-    Bus --o Client
-    Location --o Client
-    Status *-- Bus
-    AnomalyMaker -- Bus
-    Supervisor -- Bus
+    Bus --o Passenger
+    Location --o Passenger
     controller *-- Bus
-    controller *-- AnomalyMaker
     controller *-- Location
+    controller *-- Passenger
     controller -- view
-
+    controller *-- Cli
+    controller *-- Gui
 
 }
 
@@ -79,43 +82,44 @@ package view {
         -String input
     }
 
+    class Gui{
+        -SpringLayout lyt
+        -Integer width
+        -Integer height
+        -JPanel gamePanel
+        -JPanel mainPanel
+        -Controller busManager
+        -JComboBox bussesComboBox
+        -Void callMaintenance()
+        -JComboBox<String> addBussesComboBox()
+    }
+
 }
 
 package controller {
     class controller{
-        -Collection<Bus> bus
-        -Collection<Location> location
-        -Collection<AnomalyMaker> anomalyMaker
-        +Collection<Bus> getBus()
-        +Collection<Location> getLocation()
-        +Collection<AnomalyMaker> getAnomalyMaker()
-        +void addBus()
-        +void runBusses()
-
+        -HashMap<String,Bus> Busses
+        -HashMap<String,Location> Locations
+        -Collection<Passenger> passengers
+        -Integer idGenerator
+        -Integer passangerNum
+        -Integer minPassenger
+        -Integer randTimeMalfunction
+        +Void addCities()
+        +Void addBus()
+        +Void addPassangers()
+        +HashMap<String,Bus> getBusses()
+        +Boolean passangerNumWhitinLimits()
+        +Boolean busNumWhitinLimits()
+        +Boolean checkFinished()
+        +Void maintenance()
+        +Void malfunction()
+        -Void chooseMalfunction()
+        +Void nextMalfunction()
+        +String getAllText
+        +Void runBusses()
+        +Void stopAllThreads()
     }
 }
 
 @enduml
-
-Bookmark <-[#000000]- BookmarkType
-    Session ..|> iSession
-    CreateInfo ..|> iCreateInfo
-    Project ..|> iProject
-    User ..|> iUser
-    iBookmark <|..Bookmark
-    Directory ..|> iDirectory
-    Bookmark -[#007700]-|> CreateInfo
-    Project -[#007700]-|> CreateInfo
-    User -[#000000]- CreateInfo
-    Project "0.." o-[#000000]- "1" Participant
-    User "1" -[#000000]- "1" Participant
-    User "1.." *-[#000000]- "0.." Project
-    Session -[#007700]-|> CreateInfo
-    User o-[#000000]- Session
-    Session <-[#000000]- Root
-    User <-[#000000]- Root
-    Directory *-[#000000]- Directory
-    Root <-[#000000]- Directory
-    Bookmark -[#000000]-* BookmarkUser
-    BookmarkUser -[#000000]-* Directory
-    Root -[#000000]-> Project
