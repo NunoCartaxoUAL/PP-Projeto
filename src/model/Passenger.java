@@ -22,8 +22,4 @@ public class Passenger {
         this.arrived = arrived;
     }
 
-
-    public String getId() {
-        return this.id;
-    }
 }

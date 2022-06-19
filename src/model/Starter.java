@@ -27,7 +27,7 @@ public class Starter {
     }
 
     private void checkSimulationParameter() throws InterruptedException {
-        if (!BusManager.busNumWithinLimits()) { //TODO change this to be 1 of every type and the output in the print
+        if (!BusManager.busNumWithinLimits()) {
             GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Numero de Autocarros invalido. \n O numero de Autocarros que inseriu tem de ser entre de 4 a 10.");
             GUI.getUpdateTimer().stop();
         }else if(!BusManager.oneOfEachBus()){
@@ -68,17 +68,12 @@ public class Starter {
             switch (commands[0]) {
                 case "Bus" -> {
                     if (commands.length!=3){break;}
-                    //TODO expresso começar no sitio errado
-                    //TODO turn off testing mode
                     String type = commands[1];
                     String start = commands[2];
                     BusManager.addBus(type, start);
                 }
-                //TODO remove all prints/ to strings in classes
                 case "Passenger" -> {
                     if (commands.length!=2){break;}
-                    //TODO turn off testing mode2
-                    //TODO nao por isto acima dos busses
                     Integer ammount = Integer.parseInt(commands[1]);
 
                     BusManager.addPassangers(ammount);

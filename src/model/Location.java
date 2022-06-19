@@ -50,13 +50,4 @@ public class Location {
     public void addPassenger(Passenger p){
         this.passengers.add(p);
     }
-    @Override
-    public String toString() {
-        return "Location{" +
-                "name='" + name + '\'' +
-                ", northStop=" + northStop.getName() +
-                ", southStop=" + southStop.getName() +
-                ", passengers=" + passengers +
-                '}'+"\n";
-    }
 }
