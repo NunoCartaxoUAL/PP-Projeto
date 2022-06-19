@@ -59,14 +59,31 @@ public class Starter {
         File myFile = new File(currentPath+"/config.txt");
         final Scanner sc = new Scanner(myFile);
         Boolean stop=false;
+        //TODO mudar o sistema do file
         while (sc.hasNextLine() && !stop) {
             var input =  sc.nextLine();
             String[] commands = input.split(" ");
             switch (commands[0]) {
+                case "Cascais" ->{
+                    System.out.println("ohnao");
+                }
+                case "Lisboa" ->{
+                    System.out.println("ohnao");
+                }
+                case "Coimbra" ->{
+                    System.out.println("ohnao");
+                }
+                case "Porto" ->{
+                    System.out.println("ohnao");
+                }
+                case "Braga" ->{
+                    System.out.println("ohnao");
+                }
                 case "Bus" -> {
                     if (commands.length!=3){break;}
-                    String type = commands[1];
-                    String start = commands[2];
+                    Integer num = Integer.parseInt(commands[1]);
+                    String type = commands[2];
+                    var start = ""; //TODO change this
                     BusManager.addBus(type, start);
                 }
                 case "Passenger" -> {
