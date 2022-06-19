@@ -136,6 +136,17 @@ public class controller {
         return busExp && busCon && busLon && busMin;
     }
 
+    public boolean expressoBadLocation() {
+        Boolean badLocation = false;
+        for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
+            Bus value = entry.getValue();
+            if (value.getType().matches("expresso") && (value.getLocation().getName().matches("Cascais")||(value.getLocation().getName().matches("Cascais")))){
+                badLocation = true;
+            }
+        }
+        return badLocation;
+    }
+
     public boolean checkFinished(){
         var stop = true;
 

@@ -1,5 +1,7 @@
 Bus miniBus Porto
 Bus expresso Lisboa
-Bus miniBus Lisboa
+Bus expresso Cascais
+Bus convencional Lisboa
+Bus longDrive Cascais
 Passenger 1000
 

@@ -33,6 +33,9 @@ public class Starter {
         }else if(!BusManager.oneOfEachBus()){
             GUI.setTextPanelText("(Ficheiro de configuracao errado)\n É necessario inserir um autocarro de cada tipo");
             GUI.getUpdateTimer().stop();
+        }else if(BusManager.expressoBadLocation()){
+            GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Autocarros expresso não podem estar em Cascais ou Coimbra.");
+            GUI.getUpdateTimer().stop();
         } else if (!BusManager.passangerNumWhitinLimits()){ //check is number of passangers > sum of all capacities of the busses
             GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Numero de Passageiros invalido. \n O  numero de Passageiros tem the ser superior a soma das capacidades dos autocarros");
             GUI.getUpdateTimer().stop();
@@ -64,6 +67,7 @@ public class Starter {
             String[] commands = input.split(" ");
             switch (commands[0]) {
                 case "Bus" -> {
+                    if (commands.length!=3){break;}
                     //TODO expresso começar no sitio errado
                     //TODO turn off testing mode
                     String type = commands[1];
@@ -72,6 +76,7 @@ public class Starter {
                 }
                 //TODO remove all prints/ to strings in classes
                 case "Passenger" -> {
+                    if (commands.length!=2){break;}
                     //TODO turn off testing mode2
                     //TODO nao por isto acima dos busses
                     Integer ammount = Integer.parseInt(commands[1]);

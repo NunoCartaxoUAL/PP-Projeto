@@ -112,6 +112,8 @@ package controller {
         +HashMap<String,Bus> getBusses()
         +Boolean passangerNumWhitinLimits()
         +Boolean busNumWhitinLimits()
+        +Boolean oneOfEachBus()
+        +Void expressoBadLocation()
         +Boolean checkFinished()
         +Void maintenance()
         +Void malfunction()

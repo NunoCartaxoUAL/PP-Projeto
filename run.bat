@@ -1,3 +1,3 @@
 cd src
-javac program.java
+javac -d ../out/production/PP-Projeto program.java
 java program.java
