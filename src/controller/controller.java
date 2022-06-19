@@ -159,8 +159,6 @@ public class controller {
         return stop;
     }
 
-
-
     public void maintenance(String id,int time,String Reason) throws InterruptedException {
         var bus =Busses.get(id);
         bus.setStatus(Reason);
@@ -243,7 +241,7 @@ public class controller {
                     " , Status: "+value.getStatus()+"."+
                     "\n";
         }
-        text+="\n\n";
+        text+="\n";
         for(Map.Entry<String, Location> entry : Locations.entrySet()) {
             Location value = entry.getValue();
             text += value.getName()+": "+

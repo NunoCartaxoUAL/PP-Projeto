@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 import java.util.TimerTask;
-
+//TODO check english/portuguese language mixture (GUI , warnings , comments)
 public class GUI extends JFrame {
     private final SpringLayout lyt;
     private final int width;
@@ -22,7 +22,7 @@ public class GUI extends JFrame {
 
     public GUI(controller busManager){
         this.busManager = busManager;
-        this.setSize(740, 400);
+        this.setSize(740, 450);
         this.width =this.getSize().width;
         this.heigth = this.getSize().height;
         var lyt = new SpringLayout();
@@ -41,7 +41,7 @@ public class GUI extends JFrame {
         textPanel.setPreferredSize(new Dimension(this.width-200, this.heigth-100));
         textPanel.setBackground(Color.DARK_GRAY);
         textPanel.setForeground(Color.white);
-        textPanel.setFont(new Font("Calibri",0, 15));
+        textPanel.setFont(new Font("Calibri",0, 14));
         mainPanel.add(textPanel);
         lyt.putConstraint(SpringLayout.NORTH,textPanel,10,SpringLayout.NORTH,mainPanel);
         lyt.putConstraint(SpringLayout.WEST,textPanel,10,SpringLayout.WEST,mainPanel);
@@ -156,6 +156,8 @@ public class GUI extends JFrame {
         mainPanel.add(RefillBus);
         mainPanel.add(stopBus);
         mainPanel.add(changeDriver);
+
+
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setBackground(Color.BLACK);

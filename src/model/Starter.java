@@ -1,10 +1,8 @@
 package model;
 import controller.controller;
 import view.GUI;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 

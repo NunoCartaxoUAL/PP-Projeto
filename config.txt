@@ -58,5 +58,11 @@ Bus miniBus Porto
 Bus convencional Lisboa
 Bus expresso Braga
 Bus longDrive Cascais
+Bus miniBus Porto
+Bus convencional Lisboa
+Bus expresso Braga
+Bus longDrive Cascais
+Bus miniBus Porto
+Bus convencional Lisboa
 Passenger 1000
 
