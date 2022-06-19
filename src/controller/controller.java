@@ -34,11 +34,11 @@ public class controller {
     }
 
     public void addCities(){
-        Location Cascais = new Location("Cascais",20,0); // create cities one by one
-        Location Lisboa = new Location("Lisboa",25,20);
-        Location Coimbra = new Location("Coimbra",30,25);
-        Location Porto = new Location("Porto",35,30);
-        Location Braga = new Location("Braga",0,35);
+        Location Cascais = new Location("Cascais",30,0); // create cities one by one
+        Location Lisboa = new Location("Lisboa",204,30);
+        Location Coimbra = new Location("Coimbra",122,204);
+        Location Porto = new Location("Porto",55,122);
+        Location Braga = new Location("Braga",0,55);
         Cascais.setSouthAndNorthStop(Cascais,Lisboa); // link cities with eachother's memory pointers
         Lisboa.setSouthAndNorthStop(Cascais,Coimbra);
         Coimbra.setSouthAndNorthStop(Lisboa,Porto);

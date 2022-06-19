@@ -19,7 +19,6 @@ public class Starter {
         checkSimulationParameter(); // check if passengers > than the sum of the capacity of all busses
                                     // and if busses number 4<=x<=10
         malfunctionStart();
-
     }
 
     private void startSimulation() {
@@ -31,17 +30,17 @@ public class Starter {
             GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Numero de Autocarros invalido. \n O numero de Autocarros que inseriu tem de ser entre de 4 a 10.");
             GUI.getUpdateTimer().stop();
         }else if(!BusManager.oneOfEachBus()){
-            GUI.setTextPanelText("(Ficheiro de configuracao errado)\n É necessario inserir um autocarro de cada tipo");
+            GUI.setTextPanelText("(Ficheiro de configuracao errado)\n E necessario inserir um autocarro de cada tipo");
             GUI.getUpdateTimer().stop();
         }else if(BusManager.expressoBadLocation()){
-            GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Autocarros expresso não podem estar em Cascais ou Coimbra.");
+            GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Autocarros expresso nao podem estar em Cascais ou Coimbra.");
             GUI.getUpdateTimer().stop();
         } else if (!BusManager.passangerNumWhitinLimits()){ //check is number of passangers > sum of all capacities of the busses
             GUI.setTextPanelText("(Ficheiro de configuracao errado)\n Numero de Passageiros invalido. \n O  numero de Passageiros tem the ser superior a soma das capacidades dos autocarros");
             GUI.getUpdateTimer().stop();
         }else{
             synchronized (this){
-                wait(1500);
+                wait(1000);
                 startSimulation();
             }
 

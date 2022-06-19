@@ -32,10 +32,7 @@ public class GUI extends JFrame {
         //basic setup of the 2 JPanels , main and game
         this.mainPanel = new JPanel();
         this.setContentPane(mainPanel);
-
         mainPanel.setBackground(Color.DARK_GRAY);
-
-
         mainPanel.setLayout(lyt);
 
         //timer for the Actions that need repetition
@@ -48,7 +45,6 @@ public class GUI extends JFrame {
         mainPanel.add(textPanel);
         lyt.putConstraint(SpringLayout.NORTH,textPanel,10,SpringLayout.NORTH,mainPanel);
         lyt.putConstraint(SpringLayout.WEST,textPanel,10,SpringLayout.WEST,mainPanel);
-
         //JLabel visor = new JLabel();
         ActionListener updateText = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -136,12 +132,14 @@ public class GUI extends JFrame {
         lyt.putConstraint(SpringLayout.WEST,Author1,10,SpringLayout.EAST,textPanel);
         lyt.putConstraint(SpringLayout.NORTH,Author1,200,SpringLayout.NORTH,textPanel);
         mainPanel.add(Author1);
+
         JLabel Author2 = new JLabel();
         Author2.setText("Andre Martins 30007252");
         Author2.setForeground(Color.white);
         lyt.putConstraint(SpringLayout.WEST,Author2,10,SpringLayout.EAST,textPanel);
         lyt.putConstraint(SpringLayout.NORTH,Author2,15,SpringLayout.SOUTH,Author1);
         mainPanel.add(Author2);
+
         JLabel Author3 = new JLabel();
         Author3.setText("Andre Santos  30007679");
         Author3.setForeground(Color.white);
@@ -149,20 +147,11 @@ public class GUI extends JFrame {
         lyt.putConstraint(SpringLayout.NORTH,Author3,15,SpringLayout.SOUTH,Author2);
         mainPanel.add(Author3);
 
-
-
-        /*
-        visor.setForeground(Color.white);
-        lyt.putConstraint(SpringLayout.NORTH,visor,0,SpringLayout.NORTH,gamePanel);
-        lyt.putConstraint(SpringLayout.WEST,visor,0,SpringLayout.WEST,gamePanel);*/
-
-
         this.bussesComboBox = addBussesComboBox();
         lyt.putConstraint(SpringLayout.WEST,bussesComboBox,10,SpringLayout.EAST,textPanel);
         lyt.putConstraint(SpringLayout.NORTH,bussesComboBox,0,SpringLayout.NORTH,textPanel);
 
         mainPanel.add(bussesComboBox);
-        //gamePanel.add(visor);
         mainPanel.add(maintenance);
         mainPanel.add(RefillBus);
         mainPanel.add(stopBus);

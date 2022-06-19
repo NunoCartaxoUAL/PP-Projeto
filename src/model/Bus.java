@@ -43,10 +43,6 @@ public class Bus extends Thread{
         return location;
     }
 
-    public List<String> getTasks() {
-        return tasks;
-    }
-
     public void setStatus(String status) {
         this.status = status;
     }
@@ -83,11 +79,10 @@ public class Bus extends Thread{
         for (int i = 1; i <=distance; i++) {
 
             var timePerKm = 1/speed;
-            var milliseconds = timePerKm*60*60*1000/100; //TODO remove the /
+            var milliseconds = timePerKm*60*60*1000/1000; //TODO remove the /
             var percentage = (i/distance)*100;
-            //milliseconds = 10;
+            milliseconds = 10;
             percentageToDestination = percentage;
-            //System.out.println("the bus "+busID+"_"+type+" has done "+i+"km which is "+(int) percentage+"% of the way to "+this.location.getName());
             try {
                 sleep((long) milliseconds);
             } catch (InterruptedException e) {
@@ -100,6 +95,7 @@ public class Bus extends Thread{
             for (int i = 0; i < passengers.size(); i++) {
                 var p= passengers.get(i);
                 if (p.getDestination().matches(this.location.getName())){
+                    i--;
                     p.setArrived(true);
                     passengers.remove(p);
                 }
