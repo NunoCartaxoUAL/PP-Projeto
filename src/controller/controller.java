@@ -13,9 +13,10 @@ public class controller {
     private int idGenerator = 1;
     private int passangerNum = 0;
     private int minPassenger;
-    private int randTimeMalfunction = 10000;
+    private int randTimeMalfunction = 0;
 
     public controller() {
+        randTimeMalfunction = new Random().nextInt(5*1000,40*1000);
         addCities(); // statically add cities
         Timer t1 = new Timer();
         TimerTask checkIfFinished = new TimerTask() { // check ever second if the simulation is over
@@ -48,8 +49,6 @@ public class controller {
         Locations.put("Coimbra",Coimbra);
         Locations.put("Porto",Porto);
         Locations.put("Braga",Braga);
-
-        System.out.println(Locations);
     }
 
     public void addBus(String type,String Start) {
@@ -114,6 +113,28 @@ public class controller {
     public boolean busNumWithinLimits() {
         return Busses.size()<=10 && Busses.size()>=4;
     }
+    public boolean oneOfEachBus() {
+        Boolean busExp = false;
+        Boolean busCon = false;
+        Boolean busMin = false;
+        Boolean busLon = false;
+        for(Map.Entry<String, Bus> entry : Busses.entrySet()) {
+            Bus value = entry.getValue();
+            if (value.getType().matches("expresso")){
+                busExp = true;
+            }
+            if (value.getType().matches("miniBus")){
+                busMin = true;
+            }
+            if (value.getType().matches("longDrive")){
+                busLon = true;
+            }
+            if (value.getType().matches("convencional")){
+                busCon = true;
+            }
+        }
+        return busExp && busCon && busLon && busMin;
+    }
 
     public boolean checkFinished(){
         var stop = true;
@@ -129,12 +150,13 @@ public class controller {
 
 
 
-    public void maintenance(String id,int time) throws InterruptedException {
+    public void maintenance(String id,int time,String Reason) throws InterruptedException {
         var bus =Busses.get(id);
-        //bus.setTask("maintenance");
+        bus.setStatus(Reason);
         bus.suspend();
-        Thread.sleep(time*1000);
+        Thread.sleep(time* 1000L);
         bus.resume();
+        bus.setStatus("Normal");
     }
 
 
@@ -143,7 +165,7 @@ public class controller {
         timer.schedule(new TimerTask() {
             public void run() {
                 int randInt = new Random().nextInt(Busses.size());    // Choose a random integer between 0 to the number of busses we have -1
-                List<Bus> busList = new ArrayList<Bus>(Busses.values());  // create a list from the bus hashmap values
+                List<Bus> busList = new ArrayList<>(Busses.values());  // create a list from the bus hashmap values
                 var affectedBus = busList.get(randInt);  //get a bus with the random integer
                 synchronized (affectedBus){
                     try {
@@ -168,21 +190,21 @@ public class controller {
             case "tire" -> {
                 affectedBus.setStatus("This bus is dealing with a punctured tire");
                 affectedBus.suspend();// suspend the thread from bus
-                Thread.sleep(10*1000);//  put malfunction timer to sleep //TODO check this time
+                Thread.sleep(10*1000);//  put malfunction timer to sleep
                 affectedBus.resume();// resume the thread from bus after sleeping for 8 seconds
                 affectedBus.setStatus("Normal");
             }
             case "cooler" -> {
                 affectedBus.setStatus("This bus is dealing with a punctured tire");
                 affectedBus.suspend();// suspend the thread from bus
-                Thread.sleep(20*1000);//  put malfunction timer to sleep //TODO check this time
+                Thread.sleep(20*1000);//  put malfunction timer to sleep
                 affectedBus.resume();// resume the thread from bus after sleeping for 8 seconds
                 affectedBus.setStatus("Normal");
             }
             case "animal" -> {
                 affectedBus.setStatus("this bus has an animal in front of the road");
                 affectedBus.suspend();// suspend the thread from bus
-                Thread.sleep(7*1000);//  put malfunction timer to sleep //TODO check this time
+                Thread.sleep(7*1000);//  put malfunction timer to sleep
                 affectedBus.resume();// resume the thread from bus after sleeping for 8 seconds
                 affectedBus.setStatus("Normal");
             }
@@ -190,8 +212,8 @@ public class controller {
 
     }
 
-    public void nextMalfunction(Timer timer) throws InterruptedException {
-        randTimeMalfunction = new Random().nextInt(5*1000,40*1000); //TODO check this time
+    private void nextMalfunction(Timer timer) throws InterruptedException {
+        randTimeMalfunction = new Random().nextInt(5*1000,40*1000);
         //randTimeMalfunction = 200;   // change the period time
         timer.cancel(); // cancel time
         malfuntion();   // start the time again with a new period time
@@ -233,6 +255,7 @@ public class controller {
             value.stop(); //forcefully stop the thread
         }
     }
+
 
 
 }

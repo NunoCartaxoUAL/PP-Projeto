@@ -55,6 +55,14 @@ public class Bus extends Thread{
         return status;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getBusID() {
+        return busID;
+    }
+
     public Location getPastLocation(){
         return switch (this.direction) {
             case "north" -> this.location.getSouthStop();
@@ -64,7 +72,7 @@ public class Bus extends Thread{
 
     }
 
-    void driving(){
+    private void driving(){
         nextStop(); //Calculate the next stop
         if(this.direction.matches("north")){
             distance = this.location.getSouthDistance(); // get next stop north distance
@@ -87,8 +95,7 @@ public class Bus extends Thread{
             }
         }
     }
-    void unloadPassangers(){
-        //TODO REMOVE THIS
+    private void unloadPassangers(){
         if (passengers.size()>0){
             for (int i = 0; i < passengers.size(); i++) {
                 var p= passengers.get(i);
@@ -99,7 +106,7 @@ public class Bus extends Thread{
             }
         }
     }
-    void loadPassangers(){
+    private void loadPassangers(){
 
         synchronized (this.location){ // lock the variable location so that no bus can change it while this one is loading passengers
             var stopPassangers = this.location.getPassangers();
@@ -133,7 +140,7 @@ public class Bus extends Thread{
             }
         }
     }
-    void nextStop(){
+    private void nextStop(){
 
         if ("north".equals(this.direction)) {
             if (this.location == this.location.getNorthStop()) {
@@ -152,7 +159,7 @@ public class Bus extends Thread{
         }
     }
 
-    void busStop(){
+    private void busStop(){
         unloadPassangers();
         if (this.type.matches("expresso")){
             loadPassangersExpresso();
@@ -160,12 +167,6 @@ public class Bus extends Thread{
             loadPassangers();
         }
 
-    }
-
-    private void maintenance() throws InterruptedException { //TODO maybe remove
-        synchronized (this){
-            this.wait();
-        }
     }
 
     public void run() {
@@ -191,11 +192,5 @@ public class Bus extends Thread{
         }
     }
 
-    public String getType() {
-        return type;
-    }
 
-    public String getBusID() {
-        return busID;
-    }
 }

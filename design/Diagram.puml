@@ -3,7 +3,28 @@
 
 scale 600 width
 
+package view {
+
+    class Gui{
+        -SpringLayout lyt
+        -Integer width
+        -Integer height
+        -JPanel mainPanel
+        -Controller busManager
+        -JComboBox bussesComboBox
+        -Void callMaintenance()
+        -JComboBox<String> addBussesComboBox()
+    }
+
+}
 package models{
+    class Starter{
+        -Controller busManager
+        -void startSimulation()
+        -void malfunctionStart()
+        -void supervisor()
+        -void readfile()
+    }
     class Bus{
         -Collection<Passenger> passengers
         -String busID
@@ -24,17 +45,16 @@ package models{
         +Collection<String> getTasks()
         +Void setStatus()
         +String getStatus()
-        +Location getPastLocation()
-        Void Driving()
-        Void unloadPassangers()
-        Void loadPassangers()
-        -Void loadPassangersExpresso()
-        Void nextStop()
-        Void busStop()
-        -Void maintenance()
-        +Void run
         +String getType()
         +String getBusID()
+        +Location getPastLocation()
+        -Void Driving()
+        -Void unloadPassangers()
+        -Void loadPassangers()
+        -Void loadPassangersExpresso()
+        -Void nextStop()
+        -Void busStop()
+        +Void run
     }
 
     class Passenger{
@@ -70,31 +90,12 @@ package models{
     controller *-- Bus
     controller *-- Location
     controller *-- Passenger
-    controller -- view
-    controller *-- Cli
+    controller *-- Starter
     controller *-- Gui
 
 }
 
-package view {
 
-    class Cli{
-        -String input
-    }
-
-    class Gui{
-        -SpringLayout lyt
-        -Integer width
-        -Integer height
-        -JPanel gamePanel
-        -JPanel mainPanel
-        -Controller busManager
-        -JComboBox bussesComboBox
-        -Void callMaintenance()
-        -JComboBox<String> addBussesComboBox()
-    }
-
-}
 
 package controller {
     class controller{
@@ -115,8 +116,8 @@ package controller {
         +Void maintenance()
         +Void malfunction()
         -Void chooseMalfunction()
-        +Void nextMalfunction()
-        +String getAllText
+        -Void nextMalfunction()
+        +String getAllText()
         +Void runBusses()
         +Void stopAllThreads()
     }

@@ -14,10 +14,11 @@ public class GUI extends JFrame {
     private final SpringLayout lyt;
     private final int width;
     private final int heigth;
-    private final JPanel gamePanel;
     private final JPanel mainPanel;
+    private final JTextPane textPanel;
     private final controller busManager;
     private JComboBox bussesComboBox;
+    private Timer updateTimer;
 
     public GUI(controller busManager){
         this.busManager = busManager;
@@ -30,50 +31,41 @@ public class GUI extends JFrame {
 
         //basic setup of the 2 JPanels , main and game
         this.mainPanel = new JPanel();
-        this.gamePanel = new JPanel();
         this.setContentPane(mainPanel);
-        gamePanel.setPreferredSize(new Dimension(this.width-100, this.heigth-100));
-        mainPanel.setBackground(Color.DARK_GRAY);
-        gamePanel.setBackground(Color.BLACK);
-        gamePanel.setLayout(lyt);
-        mainPanel.setLayout(lyt);
 
-        //constraints for those panels in springs
-        lyt.putConstraint(SpringLayout.WEST,gamePanel,10,SpringLayout.WEST,mainPanel);
-        lyt.putConstraint(SpringLayout.EAST,gamePanel,-120,SpringLayout.EAST,mainPanel);
-        lyt.putConstraint(SpringLayout.NORTH,gamePanel,10,SpringLayout.NORTH,mainPanel);
+        mainPanel.setBackground(Color.DARK_GRAY);
+
+
+        mainPanel.setLayout(lyt);
 
         //timer for the Actions that need repetition
 
-
-        int delay = 500; //milliseconds
-        JTextPane textPanel = new JTextPane();
+        textPanel = new JTextPane();
         textPanel.setPreferredSize(new Dimension(this.width-200, this.heigth-100));
         textPanel.setBackground(Color.DARK_GRAY);
         textPanel.setForeground(Color.white);
         textPanel.setFont(new Font("Calibri",0, 15));
-        gamePanel.add(textPanel);
         mainPanel.add(textPanel);
         lyt.putConstraint(SpringLayout.NORTH,textPanel,10,SpringLayout.NORTH,mainPanel);
         lyt.putConstraint(SpringLayout.WEST,textPanel,10,SpringLayout.WEST,mainPanel);
 
         //JLabel visor = new JLabel();
-        ActionListener taskPerformer = new ActionListener() {
+        ActionListener updateText = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 String text="";
                 text = busManager.getAllText();
                 textPanel.setText(text);
             }
         };
-        Timer t1 = new Timer(500,taskPerformer);
-        t1.setRepeats(true);
-        t1.start();
+        updateTimer = new Timer(500,updateText);
+        updateTimer.setRepeats(true);
+        updateTimer.start();
 
         //Various ActionListeners for the different buttons in game
         ActionListener maintenanceA = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    callMaintenance(20);
+                    callMaintenance(20,"Maintenance...");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -83,7 +75,7 @@ public class GUI extends JFrame {
         ActionListener stopA = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    callMaintenance(5);
+                    callMaintenance(5,"Stopped for 5 seconds");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -92,7 +84,7 @@ public class GUI extends JFrame {
         ActionListener changeDriverA = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    callMaintenance(10);
+                    callMaintenance(10, "Changing driver");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -101,7 +93,7 @@ public class GUI extends JFrame {
         ActionListener refillBusA = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
-                    callMaintenance(7);
+                    callMaintenance(7,"Reffilling Bus");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -145,13 +137,13 @@ public class GUI extends JFrame {
         lyt.putConstraint(SpringLayout.NORTH,Author1,200,SpringLayout.NORTH,textPanel);
         mainPanel.add(Author1);
         JLabel Author2 = new JLabel();
-        Author2.setText("André Martins 30007252");
+        Author2.setText("Andre Martins 30007252");
         Author2.setForeground(Color.white);
         lyt.putConstraint(SpringLayout.WEST,Author2,10,SpringLayout.EAST,textPanel);
         lyt.putConstraint(SpringLayout.NORTH,Author2,15,SpringLayout.SOUTH,Author1);
         mainPanel.add(Author2);
         JLabel Author3 = new JLabel();
-        Author3.setText("André Santos  30007679");
+        Author3.setText("Andre Santos  30007679");
         Author3.setForeground(Color.white);
         lyt.putConstraint(SpringLayout.WEST,Author3,10,SpringLayout.EAST,textPanel);
         lyt.putConstraint(SpringLayout.NORTH,Author3,15,SpringLayout.SOUTH,Author2);
@@ -175,7 +167,6 @@ public class GUI extends JFrame {
         mainPanel.add(RefillBus);
         mainPanel.add(stopBus);
         mainPanel.add(changeDriver);
-        mainPanel.add(gamePanel);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setBackground(Color.BLACK);
@@ -183,7 +174,15 @@ public class GUI extends JFrame {
         this.setVisible(true); //Sets all elements to be visible
     }
 
-    private void callMaintenance(int time) throws InterruptedException {
+    public void setTextPanelText(String txt){
+        textPanel.setText(txt);
+    }
+
+    public Timer getUpdateTimer() {
+        return updateTimer;
+    }
+
+    private void callMaintenance(int time, String Reason) throws InterruptedException {
 
         java.util.Timer t2 = new java.util.Timer();
         t2.schedule(new TimerTask() {
@@ -191,7 +190,7 @@ public class GUI extends JFrame {
             public void run() {
                 String busKey = bussesComboBox.getSelectedItem().toString();
                 try {
-                    busManager.maintenance(busKey,time);
+                    busManager.maintenance(busKey,time,Reason);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
