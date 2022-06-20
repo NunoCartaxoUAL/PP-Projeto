@@ -83,7 +83,6 @@ public class Bus extends Thread{
             var timePerKm = 1/speed; //calculates time per killometer
             var milliseconds = timePerKm*60*60*1000/1000; //calculates the time / by 1000
             var percentage = (i/distance)*100;
-            milliseconds = 10;
             percentageToDestination = percentage;
             try {
                 sleep((long) milliseconds);
