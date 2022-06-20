@@ -3,66 +3,15 @@
 #######################################
 #####Configuration File################
 #######################################
-#
-#############(PT-pt)###################
-#
-#Todos os comandos dever ser separados por um espaço!
-#
-#Commandos:
-#Criar Autocarro ->Bus + "tipo de Autocarro" + "Localização inicial"
-#Criar passageiros ->Passenger + "numero de passageiros"
-#
-##Tipos de Autocarro:
-#convencional: Capacidade(51) , Velocidade media(80km/h)
-#miniBus: Capacidade(24) , Velocidade media(80km/h)
-#expresso: Capacidade(69) , Velocidade media(80km/h)
-#longDrive: Capacidade(59) , Velocidade media(60km/h)
-#
-##Cidades:
-#Cascais <--30km--> Lisboa <--204km--> Coimbra <--122km--> Porto <--55km--> Braga
-#
-#Exemplo(4 autocarros , 1 de cada tipo disponivel e 1000 passageiros):
-#Bus miniBus Porto
-#Bus convencional Lisboa
-#Bus expresso Braga
-#Bus longDrive Cascais
-#Passenger 1000
-###############(Eng)###################
-#
-#All commands must be sepparated by a space!
-#
-#Commands:
-#Create Bus ->Bus + "Bus Type" + "Starting Location"
-#Create Passengers ->Passenger + "Number of passengers"
-#
-##Types of Bus:
-#convencional: Capacity(51) , Average Speed(80km/h)
-#miniBus: Capacity(24) , Average Speed(80km/h)
-#expresso: Capacity(69) , Average Speed(80km/h)
-#longDrive: Capacity(59) , Average Speed(60km/h)
-#
-##City:
-#Cascais <--30km--> Lisboa <--204km--> Coimbra <--122km--> Porto <--55km--> Braga
-#
-#Example(4 busses , 1 of each type and 1000 Passengers):
-#Bus miniBus Porto
-#Bus convencional Lisboa
-#Bus expresso Braga
-#Bus longDrive Cascais
-#Passenger 1000
-#
-#########Configure após esta linha############
-#########Configure After this line############
-#Default:
-Bus miniBus Porto
-Bus convencional Lisboa
-Bus expresso Braga
-Bus longDrive Cascais
-Bus miniBus Porto
-Bus convencional Lisboa
-Bus expresso Braga
-Bus longDrive Cascais
-Bus miniBus Porto
-Bus convencional Lisboa
-Passenger 1000
+Cidade Cascais 1
+Cidade Lisboa 1
+Cidade Coimbra 1
+Cidade Porto 1
+Cidade Braga 0
+Bus 1 expresso
+Bus 1 longDrive
+Bus 1 miniBus
+Bus 1 convencional
+Passenger 400
+
 

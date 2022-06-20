@@ -4,6 +4,6 @@ import java.io.FileNotFoundException;
 
 public class program {
     public static void main(String[] args) throws FileNotFoundException, InterruptedException {
-        new Starter();
+        new Starter(); // prepares the simulation to run and runs it if there is no problems
     }
 }

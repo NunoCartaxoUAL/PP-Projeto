@@ -6,10 +6,10 @@ import java.util.List;
 public class Location {
 
     private String name;
-    private Location northStop;
+    private Location northStop; //north stop(location) in the route
+    private Location southStop; //south stop(location) in the route
     private double northDistance;
     private double southDistance;
-    private Location southStop;
     private List<Passenger> passengers =new ArrayList<Passenger>();
 
     public Location(String name, double northDistance, double southDistance) {
@@ -42,7 +42,7 @@ public class Location {
         return southDistance;
     }
 
-    public void setSouthAndNorthStop(Location southStop, Location northStop) {
+    public void setSouthAndNorthStop(Location southStop, Location northStop) { //adds both south and north city at the same time
         this.southStop = southStop;
         this.northStop = northStop;
     }
